@@ -1,0 +1,2 @@
+rootProject.name='Serial Communication UART'
+include ':app'
