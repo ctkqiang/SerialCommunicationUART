@@ -1,9 +1,11 @@
 <component name="ProjectDictionaryState">
   <dictionary name="johnm">
     <words>
+      <w>baudrate</w>
       <w>johnmelodyme</w>
       <w>kylogger</w>
       <w>serialcommunicationuart</w>
+      <w>uart</w>
     </words>
   </dictionary>
 </component>

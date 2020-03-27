@@ -23,21 +23,27 @@ package my.kylogger.johnmelodyme.iot.embedded.serialcommunicationuart;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import com.hoho.*;
-import com.hoho.android.usbserial.driver.UsbSerialDriver;
+import android.widget.EditText;
+import com.physicaloid.lib.Physicaloid;
+
 
 public class SerialCommunicationActivity extends AppCompatActivity {
     public static final String TAG = "SerialCommunicationUART";
-    public UsbSerialDriver usbSerialDriver;
-    private TextView RX,TX;
-    private Button Send_Btn;
+    public Physicaloid physicaloid;
+    private Button Send_Btn, Clear_btn;
+    private EditText Input;
 
     public void DeclarationInit() {
-        RX = findViewById(R.id.RX);
-        TX = findViewById(R.id.TX);
         Send_Btn = findViewById(R.id.send);
+        Clear_btn = findViewById(R.id.Clear);
+        physicaloid = new Physicaloid(this);
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
     }
 
     @Override
@@ -46,5 +52,12 @@ public class SerialCommunicationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: " + SerialCommunicationActivity.class.getSimpleName());
         DeclarationInit();
+
+        Send_Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 }
