@@ -21,19 +21,25 @@ package my.kylogger.johnmelodyme.iot.embedded.serialcommunicationuart;
  */
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import com.ligl.android.widget.iosdialog.IOSDialog;
 import com.physicaloid.lib.Physicaloid;
 import com.physicaloid.lib.usb.driver.uart.ReadLisener;
+import java.util.Arrays;
 
 
 public class SerialCommunicationActivity extends AppCompatActivity {
@@ -56,11 +62,6 @@ public class SerialCommunicationActivity extends AppCompatActivity {
         AutoScroll = findViewById(R.id.autoscroll);
         physicaloid = new Physicaloid(this);
         setEnabledUi(false);
-    }
-
-    @Override
-    public void onStart(){
-        super.onStart();
     }
 
     @Override
@@ -117,6 +118,7 @@ public class SerialCommunicationActivity extends AppCompatActivity {
 
                 if (AutoScroll.isChecked()){
                     OutPut.setMovementMethod(new ScrollingMovementMethod());
+                    Log.d(TAG, "Auto Scroll isChecked()");
                 }
 
                 physicaloid.addReadListener(new ReadLisener() {
@@ -125,6 +127,7 @@ public class SerialCommunicationActivity extends AppCompatActivity {
                         byte [] buffer = new byte[size];
                         physicaloid.read(buffer, size);
                         OutputAppend(OutPut, Html.fromHtml("<font color=blue>" + new String(buffer) + "</font>"));
+                        Log.d(TAG, "onRead: " + Arrays.toString(buffer));
                     }
                 });
             }
@@ -179,7 +182,40 @@ public class SerialCommunicationActivity extends AppCompatActivity {
             @Override
             public void run() {
                 ftv.append(sequence);
+                Log.d(TAG, "Sequence " + sequence);
             }
         });
+    }
+
+    @Override
+    // TODO  onCreateOptionsMenu()
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    // TODO onOptionsItemSelected()
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == R.id.About) {
+            new IOSDialog.Builder(SerialCommunicationActivity.this)
+                    .setTitle("About")
+                    .setMessage(getResources().getString(R.string.aboutdev) +
+                            "\n" +
+                            getResources().getString(R.string.Johnmelody) +
+                            "\n" +
+                            getResources().getString(R.string.SinDee))
+                    .setPositiveButton("Ok", null)
+                    .show();
+            return false;
+        }
+
+        if (menuItem.getItemId() == R.id.arduinocode){
+            Intent ToArduino;
+            ToArduino = new Intent(SerialCommunicationActivity.this, ArduinoCode.class);
+            startActivity(ToArduino);
+            return false;
+        }
+        return super.onOptionsItemSelected(menuItem);
     }
 }
