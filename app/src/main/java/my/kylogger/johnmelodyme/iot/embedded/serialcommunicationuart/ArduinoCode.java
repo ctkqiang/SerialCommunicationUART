@@ -47,7 +47,7 @@ public class ArduinoCode extends AppCompatActivity implements View.OnTouchListen
         arduino.setOnTouchListener(this);
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new InputStreamReader(getAssets().open("arduino.txt")));
+            reader = new BufferedReader(new InputStreamReader(getAssets().open("arduino.ino")));
 
             String line;
             while ((line = reader.readLine()) != null){
