@@ -79,41 +79,54 @@ public class SerialCommunicationActivity extends AppCompatActivity {
                     case "300 baud":
                         physicaloid.setBaudrate(300);
                         break;
+
                     case "1200 baud":
                         physicaloid.setBaudrate(1200);
                         break;
+
                     case "2400 baud":
                         physicaloid.setBaudrate(2400);
                         break;
+
                     case "4800 baud":
                         physicaloid.setBaudrate(4800);
                         break;
+
                     case "9600 baud":
                         physicaloid.setBaudrate(9600);
                         break;
+
                     case "19200 baud":
                         physicaloid.setBaudrate(19200);
                         break;
+
                     case "38400 baud":
                         physicaloid.setBaudrate(38400);
                         break;
+
                     case "576600 baud":
                         physicaloid.setBaudrate(576600);
                         break;
+
                     case "7448800 baud":
                         physicaloid.setBaudrate(744880);
                         break;
+
                     case "115200 baud":
                         physicaloid.setBaudrate(115200);
                         break;
+
                     case "230400 baud":
                         physicaloid.setBaudrate(230400);
                         break;
+
                     case "250000 baud":
                         physicaloid.setBaudrate(250000);
                         break;
+
                     default:
                         physicaloid.setBaudrate(9600);
+                        break;
                 }
 
                 if (AutoScroll.isChecked()){
@@ -188,14 +201,12 @@ public class SerialCommunicationActivity extends AppCompatActivity {
     }
 
     @Override
-    // TODO  onCreateOptionsMenu()
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    // TODO onOptionsItemSelected()
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.About) {
             new IOSDialog.Builder(SerialCommunicationActivity.this)
@@ -216,6 +227,7 @@ public class SerialCommunicationActivity extends AppCompatActivity {
             startActivity(ToArduino);
             return false;
         }
+
         return super.onOptionsItemSelected(menuItem);
     }
 }
