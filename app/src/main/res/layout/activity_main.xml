@@ -20,7 +20,7 @@
             android:orientation="vertical" >
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
@@ -31,7 +31,7 @@
                 android:inputType="textPersonName" />
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/baud"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="15dp"
@@ -85,7 +85,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/out"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:layout_marginStart="15dp"

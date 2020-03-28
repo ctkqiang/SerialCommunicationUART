@@ -22,23 +22,40 @@ package my.kylogger.johnmelodyme.iot.embedded.serialcommunicationuart;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import com.physicaloid.lib.Physicaloid;
+import com.physicaloid.lib.usb.driver.uart.ReadLisener;
 
 
 public class SerialCommunicationActivity extends AppCompatActivity {
     public static final String TAG = "SerialCommunicationUART";
     public Physicaloid physicaloid;
-    private Button Send_Btn, Clear_btn;
+    private TextView OutPut;
+    private CheckBox AutoScroll;
+    private Spinner Baud;
+    private Button Send_Btn, Clear_btn, OpenBtn, CloseBtn;
     private EditText Input;
 
     public void DeclarationInit() {
+        Input = findViewById(R.id.input);
+        OpenBtn = findViewById(R.id.open);
+        CloseBtn = findViewById(R.id.close);
         Send_Btn = findViewById(R.id.send);
         Clear_btn = findViewById(R.id.Clear);
+        OutPut = findViewById(R.id.out);
+        Baud = findViewById(R.id.baud);
+        AutoScroll = findViewById(R.id.autoscroll);
         physicaloid = new Physicaloid(this);
+        setEnabledUi(false);
     }
 
     @Override
@@ -53,10 +70,115 @@ public class SerialCommunicationActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: " + SerialCommunicationActivity.class.getSimpleName());
         DeclarationInit();
 
+        OpenBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String BaudText = Baud.getSelectedItem().toString();
+                switch (BaudText) {
+                    case "300 baud":
+                        physicaloid.setBaudrate(300);
+                        break;
+                    case "1200 baud":
+                        physicaloid.setBaudrate(1200);
+                        break;
+                    case "2400 baud":
+                        physicaloid.setBaudrate(2400);
+                        break;
+                    case "4800 baud":
+                        physicaloid.setBaudrate(4800);
+                        break;
+                    case "9600 baud":
+                        physicaloid.setBaudrate(9600);
+                        break;
+                    case "19200 baud":
+                        physicaloid.setBaudrate(19200);
+                        break;
+                    case "38400 baud":
+                        physicaloid.setBaudrate(38400);
+                        break;
+                    case "576600 baud":
+                        physicaloid.setBaudrate(576600);
+                        break;
+                    case "7448800 baud":
+                        physicaloid.setBaudrate(744880);
+                        break;
+                    case "115200 baud":
+                        physicaloid.setBaudrate(115200);
+                        break;
+                    case "230400 baud":
+                        physicaloid.setBaudrate(230400);
+                        break;
+                    case "250000 baud":
+                        physicaloid.setBaudrate(250000);
+                        break;
+                    default:
+                        physicaloid.setBaudrate(9600);
+                }
+
+                if (AutoScroll.isChecked()){
+                    OutPut.setMovementMethod(new ScrollingMovementMethod());
+                }
+
+                physicaloid.addReadListener(new ReadLisener() {
+                    @Override
+                    public void onRead(int size) {
+                        byte [] buffer = new byte[size];
+                        physicaloid.read(buffer, size);
+                        OutputAppend(OutPut, Html.fromHtml("<font color=blue>" + new String(buffer) + "</font>"));
+                    }
+                });
+            }
+        });
+
+        CloseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (physicaloid.close()) {
+                    physicaloid.clearReadListener();
+                    setEnabledUi(false);
+                }
+            }
+        });
+
         Send_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String out;
+                out = Input.getText().toString()+"\r\n";
+                if (out.length() > 0) {
+                    byte [] buffer = out.getBytes();
+                    physicaloid.write(buffer, buffer.length);
+                }
+            }
+        });
+    }
 
+    public void setEnabledUi(boolean on) {
+        if (on) {
+            OpenBtn.setEnabled(false);
+            Baud.setEnabled(false);
+            AutoScroll.setEnabled(false);
+            CloseBtn.setEnabled(true);
+            Input.setEnabled(true);
+            OutPut.setEnabled(true);
+        } else {
+            OpenBtn.setEnabled(true);
+            Baud.setEnabled(true);
+            AutoScroll.setEnabled(true);
+            CloseBtn.setEnabled(false);
+            Input.setEnabled(false);
+            OutPut.setEnabled(false);
+        }
+    }
+
+    Handler handler = new Handler();
+    private void OutputAppend(TextView tv, CharSequence text) {
+        final TextView ftv = tv;
+        final CharSequence sequence = text;
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                ftv.append(sequence);
             }
         });
     }

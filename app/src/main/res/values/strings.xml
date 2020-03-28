@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Serial Communication UART</string><string name="action_settings">Settings</string>
+    <string name="app_name">Serial Monitor</string><string name="action_settings">Settings</string>
     <string name="baud_prompt">Choose Baudrate</string>
     <string name="autoscroll">AutoScroll</string>
     <string-array name="baud_arrays">
